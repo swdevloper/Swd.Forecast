@@ -15,7 +15,7 @@ namespace Swd.Forecast.Gui.Retriever
         {
             ReadConfiguration();
             InitLogging(_configuration);
-
+            Log.Information(string.Format("{0}: Application started", MethodBase.GetCurrentMethod().Name));
 
         }
 
@@ -36,12 +36,7 @@ namespace Swd.Forecast.Gui.Retriever
                 Log.Logger = new LoggerConfiguration()
                     .ReadFrom.Configuration(configuration)
                     .CreateLogger();
-
                 Log.Debug(string.Format("{0}: Logging started", MethodBase.GetCurrentMethod().Name));
-
-
-
-
             }
         }
     }
