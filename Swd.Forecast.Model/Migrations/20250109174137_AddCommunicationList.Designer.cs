@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Swd.Forecast.Model;
 
@@ -11,9 +12,11 @@ using Swd.Forecast.Model;
 namespace Swd.Forecast.Model.Migrations
 {
     [DbContext(typeof(ForecastContext))]
-    partial class ForecastContextModelSnapshot : ModelSnapshot
+    [Migration("20250109174137_AddCommunicationList")]
+    partial class AddCommunicationList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

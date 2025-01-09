@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Swd.Forecast.Model;
 
@@ -11,9 +12,11 @@ using Swd.Forecast.Model;
 namespace Swd.Forecast.Model.Migrations
 {
     [DbContext(typeof(ForecastContext))]
-    partial class ForecastContextModelSnapshot : ModelSnapshot
+    [Migration("20250109172152_ChangeModelBase")]
+    partial class ChangeModelBase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,71 +24,6 @@ namespace Swd.Forecast.Model.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Swd.Forecast.Model.CommunicationList", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CommunicationIdentifier")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("CommunicationType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Headline")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsSent")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<int>("RecipientId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecommendationId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SentDateTime")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
-
-                    b.HasIndex("Id")
-                        .HasDatabaseName("idx_CommunicationList");
-
-                    b.HasIndex("RecipientId");
-
-                    b.HasIndex("RecommendationId");
-
-                    b.ToTable("CommunicationList");
-                });
 
             modelBuilder.Entity("Swd.Forecast.Model.MeasuredData", b =>
                 {
@@ -294,25 +232,6 @@ namespace Swd.Forecast.Model.Migrations
                         .HasDatabaseName("idx_TypeOfRecommendation");
 
                     b.ToTable("TypeOfRecommendation");
-                });
-
-            modelBuilder.Entity("Swd.Forecast.Model.CommunicationList", b =>
-                {
-                    b.HasOne("Swd.Forecast.Model.Recipient", "Recipient")
-                        .WithMany()
-                        .HasForeignKey("RecipientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Swd.Forecast.Model.Recommendation", "Recommendation")
-                        .WithMany()
-                        .HasForeignKey("RecommendationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipient");
-
-                    b.Navigation("Recommendation");
                 });
 
             modelBuilder.Entity("Swd.Forecast.Model.MeasuredData", b =>

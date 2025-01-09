@@ -13,6 +13,11 @@ namespace Swd.Forecast.Model
 
         public DbSet<TypeOfMeasuredData> TypeOfMeasuredData { get; set; }
         public DbSet<TypeOfRecommendation> TypeOfRecommendation { get; set; }
+        public DbSet<Recipient> Recipient { get; set; }
+        public DbSet<MeasuredData> MeasuredData { get; set; }
+        public DbSet<Recommendation> Recommendation { get; set; }
+        public DbSet<CommunicationList> CommunicationList  { get; set; }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -33,14 +38,12 @@ namespace Swd.Forecast.Model
         {
             base.OnModelCreating(modelBuilder);
 
-
             modelBuilder.ApplyConfiguration(new TypeOfRecommendationConfig());
             modelBuilder.ApplyConfiguration(new TypeOfMeasuredDataConfig());
             modelBuilder.ApplyConfiguration(new RecipientConfig());
             modelBuilder.ApplyConfiguration(new MeasuredDataConfig());
             modelBuilder.ApplyConfiguration(new RecommendationConfig());
-
-
+            modelBuilder.ApplyConfiguration(new CommunicationListConfig());
         }
     }
 }
