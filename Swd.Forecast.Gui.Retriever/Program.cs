@@ -25,7 +25,8 @@ namespace Swd.Forecast.Gui.Retriever
 
             string apiConfigFile = _configuration.GetValue<string>("ApiConfigurationFile");
             ReadApiConfiguration(apiConfigFile);
-
+            
+            //TODO: Konfiguration auslagern
             string lat = _apiConfiguration.GetValue<string>("lat"); 
             string lon = _apiConfiguration.GetValue<string>("lon"); 
             string units = _apiConfiguration.GetValue<string>("units");
@@ -33,22 +34,72 @@ namespace Swd.Forecast.Gui.Retriever
             string apiCallString = _apiConfiguration.GetValue<string>("apiCallString");
             string queryString = string.Format("lat={0}&lon={1}&appid={2}&units={3}", lat, lon, appId, units);
 
-
-            string content = await GetApiResponseContent(apiCallString, queryString);
-
-
-            WeatherDataModel weatherData = JsonConvert.DeserializeObject<WeatherDataModel>(content);
+            //Längere Form des untenstehenden verketteten Aufrufs
+            //string content = await ApiHelper.GetApiResponseContent(apiCallString, queryString);
+            //AddMeasuredData(GetWeatherDataModelFromContent(content));
 
 
-            MeasuredData measuredData = new MeasuredData();
-            measuredData.MeasuredValue = weatherData.Main.Temp.ToString();
-            measuredData.MeasuredDateTime = weatherData.Dt.UnixTimeStampToDateTime();
-            
-
-            MeasuredDataService service = new MeasuredDataService();
-            service.Add(measuredData);
-
+             AddMeasuredData(GetWeatherDataModelFromContent(await ApiHelper.GetApiResponseContent(apiCallString, queryString)));
         }
+
+
+
+        private static WeatherDataModel GetWeatherDataModelFromContent(string content)
+        {
+            WeatherDataModel weatherData = new WeatherDataModel();
+            Log.Debug(string.Format("{0}: Serializing content", MethodBase.GetCurrentMethod().Name));
+            try
+            {
+                weatherData = JsonConvert.DeserializeObject<WeatherDataModel>(content);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, string.Format("{0}: Error serializing content", MethodBase.GetCurrentMethod().Name));
+            }
+            return weatherData;
+        }
+
+
+        private static void AddMeasuredData(WeatherDataModel weatherDataModel)
+        {
+            try
+            {
+                Log.Debug(string.Format("{0}: Adding measured data", MethodBase.GetCurrentMethod().Name));
+
+
+
+
+                TypeOfMeasuredDataService typeOfMeasuredDataService = new TypeOfMeasuredDataService();
+                List<TypeOfMeasuredData> typeOfMeasuredDatas = typeOfMeasuredDataService.ReadAll().ToList();
+
+
+
+                MeasuredDataService service = new MeasuredDataService();
+
+                MeasuredData measuredData = new MeasuredData();
+                measuredData.MeasuredValue = weatherDataModel.Main.Temp.ToString();
+                measuredData.MeasuredDateTime = weatherDataModel.Dt.UnixTimeStampToDateTime();
+                measuredData.TypeOfMeasuredDataId = typeOfMeasuredDatas.Where(d => d.Id == "Temperature").FirstOrDefault().Id;
+                service.Add(measuredData);
+
+                measuredData = new MeasuredData();
+                measuredData.MeasuredValue = weatherDataModel.Main.Pressure.ToString();
+                measuredData.MeasuredDateTime = weatherDataModel.Dt.UnixTimeStampToDateTime();
+                measuredData.TypeOfMeasuredDataId = typeOfMeasuredDatas.Where(d => d.Id == "Pressure").FirstOrDefault().Id;
+                service.Add(measuredData);
+
+
+                measuredData = new MeasuredData();
+                measuredData.MeasuredValue = weatherDataModel.Main.Humidity.ToString();
+                measuredData.MeasuredDateTime = weatherDataModel.Dt.UnixTimeStampToDateTime();
+                measuredData.TypeOfMeasuredDataId = typeOfMeasuredDatas.Where(d => d.Id == "Humidity").FirstOrDefault().Id;
+                service.Add(measuredData);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, string.Format("{0}: Error adding measured data", MethodBase.GetCurrentMethod().Name));
+            }
+        }  
 
 
         private static void ReadConfiguration ()
@@ -58,7 +109,6 @@ namespace Swd.Forecast.Gui.Retriever
                 .AddJsonFile(_appConfigFile, optional: true, reloadOnChange: true)
                 .Build();
         }
-
 
 
         private static void ReadApiConfiguration(string apiConfigFile)
@@ -80,7 +130,6 @@ namespace Swd.Forecast.Gui.Retriever
         }
 
 
-
         private static void InitLogging(IConfiguration configuration)
         {
             {
@@ -92,30 +141,7 @@ namespace Swd.Forecast.Gui.Retriever
         }
 
 
-        private static async Task<string> GetApiResponseContent(string apiCallString, string queryString)
-        {
-            Log.Debug(string.Format("{0}: Getting api response", MethodBase.GetCurrentMethod().Name));
-            string content = string.Empty;
-            try
-            {
-                var client = new HttpClient();
-                var request = new HttpRequestMessage(HttpMethod.Get, string.Format("{0}{1}", apiCallString, queryString));
 
-                var response = await client.SendAsync(request);
-
-                Log.Debug(string.Format("{0}: Response code {1}", MethodBase.GetCurrentMethod().Name, response.StatusCode));
-
-                response.EnsureSuccessStatusCode();
-
-                content = await response.Content.ReadAsStringAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, string.Format("{0}: Error getting api response", MethodBase.GetCurrentMethod().Name));
-
-            }
-            return content; 
-        }
 
 
 
