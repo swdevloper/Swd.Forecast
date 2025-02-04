@@ -11,6 +11,7 @@ namespace Swd.Forecast.Model
         public int Id { get; set; }
         public string MeasuredValue { get; set; }
         public DateTime MeasuredDateTime { get; set; }
+        public string TypeOfMeasuredDataId { get; set; }
 
         public TypeOfMeasuredData TypeOfMeasuredData { get; set; }
     }
