@@ -67,12 +67,8 @@ namespace Swd.Forecast.Gui.Retriever
                 Log.Debug(string.Format("{0}: Adding measured data", MethodBase.GetCurrentMethod().Name));
 
 
-
-
                 TypeOfMeasuredDataService typeOfMeasuredDataService = new TypeOfMeasuredDataService();
                 List<TypeOfMeasuredData> typeOfMeasuredDatas = typeOfMeasuredDataService.ReadAll().ToList();
-
-
 
                 MeasuredDataService service = new MeasuredDataService();
 

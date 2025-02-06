@@ -4,32 +4,47 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Swd.Forecast.Gui.Admin"
-        mc:Ignorable="d" Title="Forecast" Background="#FF63BBD2" Width="800" Height="600" WindowStartupLocation="CenterScreen">
+        mc:Ignorable="d" Title="Forecast"  Width="1024" Height="768" WindowStartupLocation="CenterScreen">
     <Grid>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="25*"/>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="25*"/>
-        </Grid.ColumnDefinitions>
-
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="32"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Grid.ColumnSpan="3">
-            <Button x:Name="btnRead"  Content="Lesen" Width="120" Height="35" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10 0 0 0" Click="btnRead_Click" />
-            <Button x:Name="btnExit" Content="Quit" Width="120" Height="35" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10 0 0 0" />
-        </StackPanel>
-        <DataGrid x:Name="dgMeasuredData" Grid.Row="1" Grid.ColumnSpan="3" AutoGenerateColumns="False" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding id}" />
-                <DataGridTextColumn Header="Value" Binding="{Binding MeasuredValue}"/>
-                <DataGridTextColumn Header="Date" Binding="{Binding MeasuredDateTime}"/>
-            </DataGrid.Columns>
-        </DataGrid>
 
+        <!-- Tabcontrol -->
+        <TabControl Grid.Row="1">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel>
+                        <Image />
+                        <TextBlock Text="Weather data" />
+                    </StackPanel>
+                </TabItem.Header>
+
+            </TabItem>
+            <TabItem Header="Recipients">
+
+            </TabItem>
+
+            <TabItem  Header="Settings">
+
+            </TabItem>
+        </TabControl>
+        
+        
+        <!-- Statusbar -->
+        <StatusBar Grid.Row="2">
+            <StatusBarItem >
+                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                    <Label Content="Status"  />
+                    <Label Content="Ready"  />
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+
+        
     </Grid>
 </Window>

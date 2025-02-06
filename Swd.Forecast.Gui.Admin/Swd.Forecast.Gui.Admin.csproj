@@ -38,4 +38,9 @@
     <ProjectReference Include="..\Swd.Forecast.Model\Swd.Forecast.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Styles\" />
+    <Folder Include="Resources\Images\" />
+  </ItemGroup>
+
 </Project>
