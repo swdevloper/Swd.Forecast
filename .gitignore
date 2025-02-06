@@ -361,3 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Swd.Forecast.Gui.Retriever/configuration/openweathermap_current_config.json

@@ -1,9 +1,0 @@
-{
-
-  "lat": "47.41612400449803",
-  "lon": "9.739989488878477",
-  "units": "metric",
-  "appId": "",
-  "apiCallString": "https://api.openweathermap.org/data/2.5/weather?"
-
-}
