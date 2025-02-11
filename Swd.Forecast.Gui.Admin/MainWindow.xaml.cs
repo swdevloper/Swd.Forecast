@@ -1,4 +1,5 @@
 ﻿using Swd.Forecast.Business;
+using Swd.Forecast.Gui.Admin.ViewModel;
 using Swd.Forecast.Model;
 using System.Text;
 using System.Windows;
@@ -21,16 +22,14 @@ namespace Swd.Forecast.Gui.Admin
         public MainWindow()
         {
             InitializeComponent();
+
+
+            this.DataContext = new MainWindowViewModel();
         }
 
-        private void btnRead_Click(object sender, RoutedEventArgs e)
+        private void txbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
 
-            MeasuredDataService service = new MeasuredDataService();
-
-            dgMeasuredData.ItemsSource = service.ReadAll().ToList();
-
-            
         }
     }
 }

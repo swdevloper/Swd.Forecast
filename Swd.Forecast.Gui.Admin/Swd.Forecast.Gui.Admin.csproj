@@ -9,6 +9,37 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\img_bw_person.png" />
+    <None Remove="Resources\Images\img_bw_settings.png" />
+    <None Remove="Resources\Images\img_bw_weather.png" />
+    <None Remove="Resources\Images\img_col_person.png" />
+    <None Remove="Resources\Images\img_col_settings.png" />
+    <None Remove="Resources\Images\img_col_weather.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Images\img_bw_person.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Images\img_bw_settings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Images\img_bw_weather.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Images\img_col_person.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Images\img_col_settings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Images\img_col_weather.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
       <PrivateAssets>all</PrivateAssets>
@@ -36,11 +67,6 @@
     <ProjectReference Include="..\Swd.Forecast.Business\Swd.Forecast.Business.csproj" />
     <ProjectReference Include="..\Swd.Forecast.Helper\Swd.Forecast.Helper.csproj" />
     <ProjectReference Include="..\Swd.Forecast.Model\Swd.Forecast.Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Styles\" />
-    <Folder Include="Resources\Images\" />
   </ItemGroup>
 
 </Project>

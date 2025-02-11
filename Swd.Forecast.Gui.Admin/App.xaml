@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:Swd.Forecast.Gui.Admin"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/styImages.xaml" />
+                <ResourceDictionary Source="/Styles/styText.xaml" />
+                <ResourceDictionary Source="/Styles/styButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

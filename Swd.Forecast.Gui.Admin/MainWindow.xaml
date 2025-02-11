@@ -4,7 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Swd.Forecast.Gui.Admin"
+        xmlns:conv="clr-namespace:Swd.Forecast.Gui.Admin.ViewModel"
         mc:Ignorable="d" Title="Forecast"  Width="1024" Height="768" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <conv:WeatherConvert x:Key="convTempToBrush" />
+    </Window.Resources>
     <Grid>
 
         <Grid.RowDefinitions>
@@ -18,33 +23,140 @@
         <TabControl Grid.Row="1">
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel>
-                        <Image />
-                        <TextBlock Text="Weather data" />
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Source="/Resources/Images/img_col_weather.png" Style="{StaticResource imgTabImages}" />
+                        <!-- <Image Source="pack://application:,,,/Resources/Images/img_col_weather.png" Width="25" Height="25">  -->
+                        <TextBlock Text="Weather data" VerticalAlignment="Center" />
                     </StackPanel>
                 </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="179*"/>
+                        <ColumnDefinition Width="839*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal" Grid.ColumnSpan="2">
+                        <TextBox x:Name="txbSearch" Text="{Binding SearchValue}" Style="{StaticResource txbSearch}"/>
+                        <Button x:Name="btnSearch" Content="Search" Command="{Binding SearchCommand}" />
+                    </StackPanel>
+                    <ListBox Grid.Row="1" ItemsSource="{Binding WeatherDataList}" Grid.ColumnSpan="2" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding Converter={StaticResource convTempToBrush}}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="35" />
+                                            <RowDefinition Height="35" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"  Text="Bild" />
+                                        <TextBlock Style="{StaticResource txbH1}"
+                                                   Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                                                   Text="{Binding MeasuredDateTime, StringFormat='\{0:dddd\}'}" />
+                                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                                            <TextBlock  Text="{Binding MeasuredDateTime, StringFormat='\{0:tt.MM.yyy\}'}" />
+                                            <TextBlock  Text="{Binding MeasuredDateTime, StringFormat='\{0:hh:mm\}' }" />
+                                        </StackPanel>
+
+                                        <TextBlock Style="{StaticResource txbH1}" Grid.Row="0" Grid.Column="4"  Text="{Binding MeasuredValue}"/>
+                                    </Grid>
+
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                </Grid>
             </TabItem>
-            <TabItem Header="Recipients">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Source="/Resources/Images/img_col_person.png" Style="{StaticResource imgTabImages}" />
+                        <!-- <Image Source="pack://application:,,,/Resources/Images/img_col_weather.png" Width="25" Height="25">  -->
+                        <TextBlock Text="Recipients" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
+                
+                <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Style="{StaticResource lblH1}" Content="Recipient" Grid.ColumnSpan="2" />
+                <Label Grid.Column="0" Grid.Row="2" Content="Anrede" />
+                <Label Grid.Column="0" Grid.Row="3" Content="Name" />
+                <Label Grid.Column="0" Grid.Row="4" Content="Vorname" />
+                <Label Grid.Column="0" Grid.Row="5" Content="Notiz" />
+                <Label Grid.Column="0" Grid.Row="6" Content="Ist aktiv" />
+                <Label Grid.Column="0" Grid.Row="7" Content="Standort" />
+                <Label Grid.Column="0" Grid.Row="8" Content="Kommunikationsdaten" />
 
-            </TabItem>
+                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Recipient.Salutation, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Recipient.Lastname}" />
+                <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Recipient.Name}" />
+                    <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding Recipient.Notice}" />
+                    <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding Recipient.IsActive}" />
+                    <TextBox Grid.Column="1" Grid.Row="7" Text="{Binding Recipient.GeoInformation}" />
+                    <TextBox Grid.Column="1" Grid.Row="8" Text="{Binding Recipient.CommunicationData}" />
+                    <StackPanel x:Name="panButtons" Grid.Column="1" Grid.Row="9" Orientation="Horizontal" >
+                        <Button x:Name="btnCancel" Content="Cancel" Command="{Binding CancelCommand}"/>
+                        <Button x:Name="btnSave" Content="Save " Command="{Binding SaveCommand}"/>
+                </StackPanel>
 
-            <TabItem  Header="Settings">
 
+               </Grid>
+
+
+
+    </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Source="/Resources/Images/img_col_settings.png" Style="{StaticResource imgTabImages}" />
+                        <!-- <Image Source="pack://application:,,,/Resources/Images/img_col_weather.png" Width="25" Height="25">  -->
+                        <TextBlock Text="Settings" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
             </TabItem>
         </TabControl>
-        
-        
+
+
         <!-- Statusbar -->
         <StatusBar Grid.Row="2">
             <StatusBarItem >
                 <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                     <Label Content="Status"  />
                     <Label Content="Ready"  />
+                    <Label Content="Anzahl Datesätze:"  />
+                    <Label Content="{Binding RecordCount}"  />
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>
 
-        
+
     </Grid>
 </Window>
