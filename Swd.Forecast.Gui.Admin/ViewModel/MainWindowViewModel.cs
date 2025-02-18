@@ -14,12 +14,16 @@ using System.Windows.Input;
 
 namespace Swd.Forecast.Gui.Admin.ViewModel
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel: ObservableObject
     {
+        
         //Interne Felder
         private string _searchValue;
         private int _recordCount;
         private ObservableCollection<MeasuredData> _weatherDataList;
+
+        private ObservableCollection<Recipient> _recipientList;
+        private Recipient _selectedRecipient;
 
 
         //Commands
@@ -27,43 +31,96 @@ namespace Swd.Forecast.Gui.Admin.ViewModel
         {
             get;
         }
-
+        public ICommand AddCommand
+        {
+            get;
+        }
+        public ICommand SaveCommand
+        {
+            get;
+        }
+        public ICommand DeleteCommand
+        {
+            get;
+        }
 
         //Properties für Binding
         public string SearchValue
         {
             get { return _searchValue; }
             set { 
-                _searchValue = value; 
+                SetProperty(ref _searchValue, value);
+                //_searchValue = value; 
             }
         }
 
         public int RecordCount
         {
             get { return _recordCount; }
-            set { _recordCount = value; }
+            set { 
+                SetProperty(ref _recordCount, value);
+                }
         }
 
         public ObservableCollection<MeasuredData> WeatherDataList
         {
             get { return _weatherDataList; }
+            set
+            {
+                SetProperty(ref _weatherDataList, value);
+            }
         }
+
+
+        public Recipient SelectedRecipient
+        {
+            get { return _selectedRecipient; }
+            set
+            {
+                SetProperty(ref _selectedRecipient, value);
+            }
+        }
+        public ObservableCollection<Recipient> RecipientList
+        {
+            get { return _recipientList; }
+            set
+            {
+                SetProperty(ref _recipientList, value);
+            }
+        }
+
 
 
         public MainWindowViewModel()
         {
             MeasuredDataService service = new MeasuredDataService();
+            RecipientService _recipientService = new RecipientService();
 
             SearchCommand = new RelayCommand(SearchCommandExecute);
+            AddCommand = new RelayCommand(AddCommandExecute);
+            SaveCommand = new RelayCommand(SaveCommandExecute);
+            DeleteCommand = new RelayCommand(DeleteCommandExecute);
 
-            _weatherDataList = new ObservableCollection<MeasuredData>(service
+            WeatherDataList = new ObservableCollection<MeasuredData>(service
                                 .ReadAll()
                                 .Where(w => w.TypeOfMeasuredDataId == "Temperature")
                                 .OrderByDescending(w => w.MeasuredDateTime)
                                 .Take(100)
                                 .ToList());
-            
-            this.RecordCount = _weatherDataList.Count;
+
+            RecipientList = new ObservableCollection<Recipient>(_recipientService
+                                .ReadAll()
+                                .OrderBy(r => r.Lastname)
+                                .OrderBy(r => r.Firstname)
+                                .Take(100)
+                                .ToList()
+                                );
+
+
+            this.RecordCount = WeatherDataList.Count;
+
+
+
         }
 
 
@@ -78,15 +135,47 @@ namespace Swd.Forecast.Gui.Admin.ViewModel
             string searchValue = SearchValue;
 
             //_weatherDataList.Clear();
-            _weatherDataList = new ObservableCollection<MeasuredData>(service
+            WeatherDataList = new ObservableCollection<MeasuredData>(service
                            .ReadAll()
                            .Where(w => w.TypeOfMeasuredDataId == "Temperature" && w.MeasuredValue.Contains(searchValue))
                            .OrderByDescending(w => w.MeasuredDateTime)
                            .Take(100)
                            .ToList());
 
-            this.RecordCount = _weatherDataList.Count;
+            this.RecordCount = WeatherDataList.Count;
         }
 
+
+        public void AddCommandExecute()
+        {
+            Recipient r0 = new Recipient();
+            r0.Salutation = "Frau";
+            r0.IsActive = true;
+            SelectedRecipient = r0;
+        }
+        public void SaveCommandExecute()
+        {
+            RecipientService _recipientService = new RecipientService();
+            Recipient changedRecipient = SelectedRecipient;
+
+            //Wenn die Recipient-Id einen Wert <>  hat, dann existiert der Datensatz bereits in der DB
+            if(changedRecipient.Id != 0)
+            {
+                _recipientService.Update(changedRecipient);
+            }
+            //ansonsten ist es ein neuer Datensatz
+            else
+            {
+                _recipientService.Add(changedRecipient);
+                RecipientList.Add(changedRecipient);
+            }
+            
+        }
+        public void DeleteCommandExecute()
+        {
+            RecipientService _recipientService = new RecipientService();
+            _recipientService.Delete(SelectedRecipient);
+            RecipientList.Remove(SelectedRecipient);
+        }
     }
 }

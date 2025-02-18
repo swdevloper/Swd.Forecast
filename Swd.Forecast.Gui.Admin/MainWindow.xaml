@@ -15,7 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="32"/>
+            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
 
 
@@ -88,46 +88,66 @@
                     </StackPanel>
                 </TabItem.Header>
                 
+                <!-- Äusseres Gitternetz -->
                 <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="35" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0" Style="{StaticResource lblH1}" Content="Recipient" Grid.ColumnSpan="2" />
-                <Label Grid.Column="0" Grid.Row="2" Content="Anrede" />
-                <Label Grid.Column="0" Grid.Row="3" Content="Name" />
-                <Label Grid.Column="0" Grid.Row="4" Content="Vorname" />
-                <Label Grid.Column="0" Grid.Row="5" Content="Notiz" />
-                <Label Grid.Column="0" Grid.Row="6" Content="Ist aktiv" />
-                <Label Grid.Column="0" Grid.Row="7" Content="Standort" />
-                <Label Grid.Column="0" Grid.Row="8" Content="Kommunikationsdaten" />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Recipient.Salutation, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Recipient.Lastname}" />
-                <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Recipient.Name}" />
-                    <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding Recipient.Notice}" />
-                    <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding Recipient.IsActive}" />
-                    <TextBox Grid.Column="1" Grid.Row="7" Text="{Binding Recipient.GeoInformation}" />
-                    <TextBox Grid.Column="1" Grid.Row="8" Text="{Binding Recipient.CommunicationData}" />
-                    <StackPanel x:Name="panButtons" Grid.Column="1" Grid.Row="9" Orientation="Horizontal" >
-                        <Button x:Name="btnCancel" Content="Cancel" Command="{Binding CancelCommand}"/>
-                        <Button x:Name="btnSave" Content="Save " Command="{Binding SaveCommand}"/>
-                </StackPanel>
+                    <ListBox Grid.Column="0" ItemsSource="{Binding RecipientList}" DisplayMemberPath="Firstname" SelectedItem="{Binding SelectedRecipient}" >
+
+                    </ListBox>
+                    <!-- Inneres Gitternetz -->
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
 
-               </Grid>
+                        <Label Grid.Column="0" Grid.Row="0" Style="{StaticResource lblH1}" Content="Recipient" Grid.ColumnSpan="2" />
+                        <Label Grid.Column="0" Grid.Row="2" Content="Anrede" />
+                        <Label Grid.Column="0" Grid.Row="3" Content="Name" />
+                        <Label Grid.Column="0" Grid.Row="4" Content="Vorname" />
+                        <Label Grid.Column="0" Grid.Row="5" Content="Notiz" />
+                        <Label Grid.Column="0" Grid.Row="6" Content="Ist aktiv" />
+                        <Label Grid.Column="0" Grid.Row="7" Content="Standort" />
+                        <Label Grid.Column="0" Grid.Row="8" Content="Kommunikationsdaten" />
+
+                        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding SelectedRecipient.Salutation, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedRecipient.Lastname}" />
+                        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding SelectedRecipient.Firstname}" />
+                        <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding SelectedRecipient.Notice}" />
+                        <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding SelectedRecipient.IsActive}" />
+                        <TextBox Grid.Column="1" Grid.Row="7" Text="{Binding SelectedRecipient.GeoInformation}" />
+                        <TextBox Grid.Column="1" Grid.Row="8" Text="{Binding SelectedRecipient.CommunicationData}" />
+                        <StackPanel x:Name="panButtons" Grid.Column="1" Grid.Row="9" Orientation="Horizontal" >
+                            <Button x:Name="btnDelete" Content="Delete" Command="{Binding DeleteCommand}"/>
+                            <Button x:Name="btnSave" Content="Save " Command="{Binding SaveCommand}"/>
+                            <Button x:Name="btnAdd" Content="Add" Command="{Binding AddCommand}"/>
+                        </StackPanel>
+
+
+                    </Grid>
+
+                </Grid>
+                
+                
+                
+
 
 
 
