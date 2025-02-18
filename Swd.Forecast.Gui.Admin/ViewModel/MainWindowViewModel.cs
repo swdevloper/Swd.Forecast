@@ -33,7 +33,9 @@ namespace Swd.Forecast.Gui.Admin.ViewModel
         public string SearchValue
         {
             get { return _searchValue; }
-            set { _searchValue = value; }
+            set { 
+                _searchValue = value; 
+            }
         }
 
         public int RecordCount
