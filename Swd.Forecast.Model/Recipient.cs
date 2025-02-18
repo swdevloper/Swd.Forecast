@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,12 +30,14 @@ namespace Swd.Forecast.Model
             }
         }
 
+        [Required(ErrorMessage = "Salutation is Required")]
+        [MinLength(2,ErrorMessage = "Salutation should be longer than one character")]
         public string Salutation
         {
             get { return _salutation; }
             set
             {
-                SetProperty(ref _salutation, value);
+                SetProperty(ref _salutation, value,true);
             }
         }
 
@@ -90,5 +93,8 @@ namespace Swd.Forecast.Model
                 SetProperty(ref _communicationData, value);
             }
         }
+
+ 
+
     }
 }

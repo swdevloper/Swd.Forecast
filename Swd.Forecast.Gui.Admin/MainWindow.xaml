@@ -95,9 +95,12 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <ListBox Grid.Column="0" ItemsSource="{Binding RecipientList}" DisplayMemberPath="Firstname" SelectedItem="{Binding SelectedRecipient}" >
+                    <DockPanel Grid.Column="0"  VerticalAlignment="Stretch">
+                        <TextBox x:Name="txbSearchRecipient" Text="{Binding SearchValueRecipient, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top" />
+                        <ListBox  ItemsSource="{Binding RecipientList}" DisplayMemberPath="Firstname" SelectedItem="{Binding SelectedRecipient}" />
+                    </DockPanel>
+                    
 
-                    </ListBox>
                     <!-- Inneres Gitternetz -->
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
@@ -127,7 +130,8 @@
                         <Label Grid.Column="0" Grid.Row="7" Content="Standort" />
                         <Label Grid.Column="0" Grid.Row="8" Content="Kommunikationsdaten" />
 
-                        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding SelectedRecipient.Salutation, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding SelectedRecipient.Salutation, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"  />
+                        <ContentPresenter Grid.Column="1" Grid.Row="9" Content="{Binding ElementName=SelectedRecipient.Salutation, Path=(Validation.Errors).CurrentItem}" />
                         <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedRecipient.Lastname}" />
                         <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding SelectedRecipient.Firstname}" />
                         <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding SelectedRecipient.Notice}" />

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Swd.Forecast.Model
 {
-    public class ModelBase: ObservableObject
+    public class ModelBase: ObservableValidator
     {
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }

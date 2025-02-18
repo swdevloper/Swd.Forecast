@@ -19,6 +19,7 @@ namespace Swd.Forecast.Gui.Admin.ViewModel
         
         //Interne Felder
         private string _searchValue;
+        private string _searchValueRecipient;
         private int _recordCount;
         private ObservableCollection<MeasuredData> _weatherDataList;
 
@@ -53,7 +54,24 @@ namespace Swd.Forecast.Gui.Admin.ViewModel
                 //_searchValue = value; 
             }
         }
+        public string SearchValueRecipient
+        {
+            get { return _searchValueRecipient; }
+            set
+            {
+                SetProperty(ref _searchValueRecipient, value);
+                RecipientService _recipientService = new RecipientService();
+                RecipientList = new ObservableCollection<Recipient>(_recipientService
+                    .ReadAll()
+                    .Where(r => r.Firstname.Contains(_searchValueRecipient))
+                    .OrderBy(r => r.Lastname)
+                    .OrderBy(r => r.Firstname)
+                    .Take(100)
+                    .ToList()
+                    );
 
+            }
+        }
         public int RecordCount
         {
             get { return _recordCount; }
