@@ -60,6 +60,7 @@ namespace Swd.Forecast.Gui.Admin.ViewModel
             set
             {
                 SetProperty(ref _searchValueRecipient, value);
+                
                 RecipientService _recipientService = new RecipientService();
                 RecipientList = new ObservableCollection<Recipient>(_recipientService
                     .ReadAll()

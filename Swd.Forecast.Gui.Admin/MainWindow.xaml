@@ -9,6 +9,47 @@
 
     <Window.Resources>
         <conv:WeatherConvert x:Key="convTempToBrush" />
+
+
+        <Style x:Key="DefaultTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="ToolTipWithErrorMessageOnErrorStyle" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        
+        <Style x:Key="RedBackgroundOnErrorStyle" TargetType="TextBox" BasedOn="{StaticResource ToolTipWithErrorMessageOnErrorStyle}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="Background" Value="Red" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <Style x:Key="CustomErrorOnErrorStyle" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <AdornedElementPlaceholder x:Name="placeholer" />
+                            <TextBlock FontSize="11" FontStyle="Italic" Foreground="Red"
+                                     Text="{Binding ElementName=placeholer, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" />  
+                        </StackPanel>                        
+                    </ControlTemplate>                     
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
     </Window.Resources>
     <Grid>
 
@@ -96,7 +137,7 @@
                     </Grid.ColumnDefinitions>
 
                     <DockPanel Grid.Column="0"  VerticalAlignment="Stretch">
-                        <TextBox x:Name="txbSearchRecipient" Text="{Binding SearchValueRecipient, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top" />
+                        <TextBox x:Name="txbSearchRecipient" DockPanel.Dock="Top" Text="{Binding SearchValueRecipient, UpdateSourceTrigger=PropertyChanged}"  />
                         <ListBox  ItemsSource="{Binding RecipientList}" DisplayMemberPath="Firstname" SelectedItem="{Binding SelectedRecipient}" />
                     </DockPanel>
                     
@@ -131,13 +172,23 @@
                         <Label Grid.Column="0" Grid.Row="8" Content="Kommunikationsdaten" />
 
                         <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding SelectedRecipient.Salutation, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"  />
-                        <ContentPresenter Grid.Column="1" Grid.Row="9" Content="{Binding ElementName=SelectedRecipient.Salutation, Path=(Validation.Errors).CurrentItem}" />
-                        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedRecipient.Lastname}" />
-                        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding SelectedRecipient.Firstname}" />
+                        
+                        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedRecipient.Lastname,
+                                                                              Mode=TwoWay,
+                                                                              UpdateSourceTrigger=LostFocus,
+                                                                              NotifyOnValidationError=True}"
+                                                              Style="{StaticResource CustomErrorOnErrorStyle}"  
+                                                              />
+                        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding SelectedRecipient.Firstname,
+                                                                             NotifyOnValidationError=True}" 
+                                                                             Style="{StaticResource RedBackgroundOnErrorStyle}"
+                                                               />
+                        
+                        
                         <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding SelectedRecipient.Notice}" />
                         <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding SelectedRecipient.IsActive}" />
-                        <TextBox Grid.Column="1" Grid.Row="7" Text="{Binding SelectedRecipient.GeoInformation}" />
-                        <TextBox Grid.Column="1" Grid.Row="8" Text="{Binding SelectedRecipient.CommunicationData}" />
+                        <TextBox Grid.Column="1" Grid.Row="7" Text="{Binding SelectedRecipient.GeoInformation, NotifyOnValidationError=True}" />
+                        <TextBox Grid.Column="1" Grid.Row="8" Text="{Binding SelectedRecipient.CommunicationData, NotifyOnValidationError=True}" />
                         <StackPanel x:Name="panButtons" Grid.Column="1" Grid.Row="9" Orientation="Horizontal" >
                             <Button x:Name="btnDelete" Content="Delete" Command="{Binding DeleteCommand}"/>
                             <Button x:Name="btnSave" Content="Save " Command="{Binding SaveCommand}"/>
