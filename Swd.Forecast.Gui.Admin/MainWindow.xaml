@@ -54,12 +54,38 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
 
+        <!-- Menü -->
 
+        
+        <Menu Grid.Row="0">
+            
+            <MenuItem Header="Datei">
+                <MenuItem Header="Drucken"  />
+                <Separator />
+                <MenuItem Header="Änderungen speichern" IsCheckable="True" IsChecked="True" />
+                <MenuItem Header="Beenden" Command="{Binding ExitCommand}" />
+            </MenuItem>
+            <MenuItem Header="Bearbeiten">
+                <MenuItem Header="Kopieren" Command="ApplicationCommands.Copy" />
+                <MenuItem Header="Ausschneiden" Command="ApplicationCommands.Cut"/>
+                <MenuItem Header="Einfügen" Command="ApplicationCommands.Paste"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+
+            </MenuItem>
+
+
+
+
+
+
+        </Menu>
+        
         <!-- Tabcontrol -->
         <TabControl Grid.Row="1">
             <TabItem>

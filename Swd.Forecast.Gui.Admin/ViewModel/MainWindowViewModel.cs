@@ -5,6 +5,7 @@ using Swd.Forecast.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,10 @@ namespace Swd.Forecast.Gui.Admin.ViewModel
             get;
         }
         public ICommand DeleteCommand
+        {
+            get;
+        }
+        public ICommand ExitCommand
         {
             get;
         }
@@ -119,6 +124,7 @@ namespace Swd.Forecast.Gui.Admin.ViewModel
             AddCommand = new RelayCommand(AddCommandExecute);
             SaveCommand = new RelayCommand(SaveCommandExecute);
             DeleteCommand = new RelayCommand(DeleteCommandExecute);
+            ExitCommand = new RelayCommand(ExitCommandExecute);
 
             WeatherDataList = new ObservableCollection<MeasuredData>(service
                                 .ReadAll()
@@ -190,11 +196,24 @@ namespace Swd.Forecast.Gui.Admin.ViewModel
             }
             
         }
+
         public void DeleteCommandExecute()
         {
             RecipientService _recipientService = new RecipientService();
             _recipientService.Delete(SelectedRecipient);
             RecipientList.Remove(SelectedRecipient);
+        }
+
+
+        public void ExitCommandExecute()
+        {
+            MessageBoxResult result = MessageBox.Show("Anwendung schliessen?", "Beenden",
+                                                       MessageBoxButton.YesNo,
+                                                       MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
         }
     }
 }
