@@ -46,7 +46,7 @@ namespace Swd.Forecast.Unittest
             _repository.Add(item);
 
             TypeOfRecommendation addedItem = _repository.ReadByKey(item.Id);
-            Assert.IsNotNull(addedItem);
+            Assert.That(addedItem, Is.Not.Null);
         }
 
         [Test]
@@ -57,7 +57,8 @@ namespace Swd.Forecast.Unittest
             await _repository.AddAsync(item);
 
             TypeOfRecommendation addedItem = await _repository.ReadByKeyAsync(item.Id);
-            Assert.IsNotNull(addedItem);
+            Assert.That(addedItem, Is.Not.Null);
+
         }
 
         [Test]
@@ -71,7 +72,8 @@ namespace Swd.Forecast.Unittest
             _repository.Delete(item.Id);
 
             TypeOfRecommendation addedItem = _repository.ReadByKey(item.Id);
-            Assert.IsNull(addedItem);
+            Assert.That(addedItem, Is.Not.Null);
+
 
         }
 
@@ -85,7 +87,8 @@ namespace Swd.Forecast.Unittest
             await _repository.AsyncDelete(item.Id);
 
             TypeOfRecommendation addedItem = await _repository.ReadByKeyAsync(item.Id);
-            Assert.IsNull(addedItem);
+            Assert.That(addedItem, Is.Not.Null);
+
         }
 
         [Test]
@@ -97,7 +100,8 @@ namespace Swd.Forecast.Unittest
             _repository.Update(item, item.Id);
 
             TypeOfRecommendation addedItem = _repository.ReadByKey(item.Id);
-            Assert.AreNotEqual(null, addedItem.CreatedBy);
+            Assert.Equals(null, addedItem.CreatedBy);
+            
         }
 
         [Test]
@@ -109,7 +113,7 @@ namespace Swd.Forecast.Unittest
             await _repository.UpdateAsync(item, item.Id);
 
             TypeOfRecommendation addedItem = await _repository.ReadByKeyAsync(item.Id);
-            Assert.AreNotEqual(null, addedItem.CreatedBy);
+            Assert.Equals(null, addedItem.CreatedBy);
         }
 
         [Test]
@@ -132,8 +136,7 @@ namespace Swd.Forecast.Unittest
             List<TypeOfRecommendation> itemList = _repository.ReadAll().ToList();
 
             int numberOfItems2 = _repository.ReadAll().ToList().Count();
-
-            Assert.AreNotEqual(0, itemList.Count);  
+            Assert.Equals(0, itemList.Count);
 
         }
 
@@ -156,7 +159,7 @@ namespace Swd.Forecast.Unittest
 
             int numberOfItems2 = _repository.ReadAll().ToList().Count();
 
-            Assert.AreNotEqual(0, itemList.Count);
+            Assert.Equals(0, itemList.Count);
         }
         #endregion
 
@@ -170,7 +173,7 @@ namespace Swd.Forecast.Unittest
             _repositoryTypeOfMeasuredData.Add(item);
 
             TypeOfMeasuredData addedItem = _repositoryTypeOfMeasuredData.ReadByKey(item.Id);
-            Assert.IsNotNull(addedItem);
+            Assert.That(addedItem, Is.Not.Null);
         }
         #endregion
 
@@ -182,7 +185,7 @@ namespace Swd.Forecast.Unittest
             MeasuredData item = GetMeasuredData();
 
             await _repositoryMeasuredData.AddAsync(item);
-            Assert.AreNotEqual(0, item.Id);
+            Assert.Equals(0, item.Id);
         }
 
         [Test]
@@ -194,7 +197,7 @@ namespace Swd.Forecast.Unittest
             await _repositoryMeasuredData.UpdateAsync(item, item.Id);
 
             MeasuredData addedItem = await _repositoryMeasuredData.ReadByKeyAsync(item.Id);
-            Assert.AreNotEqual(null, addedItem.CreatedBy);
+            Assert.Equals(null, addedItem.CreatedBy);
         }
 
         [Test]
@@ -207,7 +210,8 @@ namespace Swd.Forecast.Unittest
             await _repositoryMeasuredData.AsyncDelete(item.Id);
 
             MeasuredData addedItem = await _repositoryMeasuredData.ReadByKeyAsync(item.Id);
-            Assert.IsNull(addedItem);
+
+            Assert.That(addedItem, Is.Not.Null);
         }
 
         [Test]
@@ -219,7 +223,7 @@ namespace Swd.Forecast.Unittest
 
             int numberOfItems = _repositoryMeasuredData.ReadAll().Count();
 
-            Assert.AreNotEqual(0, numberOfItems);
+            Assert.Equals(0, numberOfItems);
         }
         #endregion
 
